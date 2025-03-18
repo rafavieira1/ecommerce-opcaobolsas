@@ -1,4 +1,3 @@
-
 import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -10,6 +9,14 @@ interface ProductCardProps {
   onClick?: () => void;
   className?: string;
 }
+
+// Criar função utilitária para formatação de preço
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat('pt-BR', {
+    style: 'currency',
+    currency: 'BRL'
+  }).format(price);
+};
 
 const ProductCard = ({
   image,
@@ -55,22 +62,13 @@ const ProductCard = ({
         </h3>
         <div className="space-y-1">
           <p className="text-gray-500 text-sm line-through">
-            {new Intl.NumberFormat('pt-BR', {
-              style: 'currency',
-              currency: 'BRL'
-            }).format(price * 1.1)}
+            {formatPrice(price * 1.1)}
           </p>
           <p className="text-primary font-semibold">
-            {new Intl.NumberFormat('pt-BR', {
-              style: 'currency',
-              currency: 'BRL'
-            }).format(price)}
+            {formatPrice(price)}
           </p>
           <p className="text-gray-500 text-sm">
-            6x de {new Intl.NumberFormat('pt-BR', {
-              style: 'currency',
-              currency: 'BRL'
-            }).format(installmentPrice)} sem juros
+            6x de {formatPrice(installmentPrice)} sem juros
           </p>
         </div>
       </div>

@@ -32,32 +32,32 @@ const Profile = () => {
 
   const shortcuts = [
     {
-      icon: <ShoppingBag className="w-6 h-6 text-[#FF4D0D]" />,
+      icon: <ShoppingBag className="w-6 h-6 text-primary" />,
       title: "MEUS PEDIDOS",
       description: "Veja histórico e acompanhe suas compras."
     },
     {
-      icon: <User2 className="w-6 h-6 text-[#FF4D0D]" />,
+      icon: <User2 className="w-6 h-6 text-primary" />,
       title: "MEUS DADOS",
       description: "Altere seus dados cadastrados, endereços ou cadastre um novo endereço."
     },
     {
-      icon: <CreditCard className="w-6 h-6 text-[#FF4D0D]" />,
+      icon: <CreditCard className="w-6 h-6 text-primary" />,
       title: "CARTEIRA",
       description: "Gerencie seus cartões, créditos e resgate gift card."
     },
     {
-      icon: <MessageSquare className="w-6 h-6 text-[#FF4D0D]" />,
+      icon: <MessageSquare className="w-6 h-6 text-primary" />,
       title: "PROTOCOLOS",
       description: "Aqui você encontra seus protocolos de atendimento."
     },
     {
-      icon: <ThumbsUp className="w-6 h-6 text-[#FF4D0D]" />,
+      icon: <ThumbsUp className="w-6 h-6 text-primary" />,
       title: "AVALIAÇÕES",
       description: "Avalie suas compras e visualize suas avaliações e comentários."
     },
     {
-      icon: <Heart className="w-6 h-6 text-[#FF4D0D]" />,
+      icon: <Heart className="w-6 h-6 text-primary" />,
       title: "FAVORITOS",
       description: "Consulte sua lista de produtos favoritados."
     }
@@ -84,19 +84,19 @@ const Profile = () => {
           </div>
           <button
             onClick={() => navigate('/auth')}
-            className="ml-auto px-4 py-2 bg-[#FF4D0D] text-white rounded hover:bg-[#FF4D0D]/90"
+            className="ml-auto px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
           >
             EDITAR DADOS
           </button>
         </div>
 
-        <h2 className="text-xl font-semibold mb-6 text-[#FF4D0D]">ATALHOS</h2>
+        <h2 className="text-xl font-semibold mb-6 text-primary">ATALHOS</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {shortcuts.map((shortcut, index) => (
             <div key={index} className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
               <div className="flex items-start gap-4">
-                <div className="p-2 bg-[#FF4D0D]/10 rounded">
+                <div className="p-2 bg-primary/10 rounded">
                   {shortcut.icon}
                 </div>
                 <div>

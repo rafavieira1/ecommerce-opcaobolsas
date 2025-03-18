@@ -1,19 +1,20 @@
 import { useEffect, useState } from 'react';
 import { Product } from '@/types/product';
+import { products } from '@/data/products';
+import ProductCard from '@/components/product/ProductCard';
 
 const BagsPage = () => {
-  const [products, setProducts] = useState<Product[]>([]);
+  const [productsList, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Aqui você fará a chamada para a API para buscar os produtos da categoria Bolsas
+    // Simulando uma chamada à API
     const fetchProducts = async () => {
       try {
         setLoading(true);
-        // Substitua esta linha pela chamada real à sua API
-        const response = await fetch('/api/products?category=bags');
-        const data = await response.json();
-        setProducts(data);
+        // Filtrando apenas produtos da categoria bags
+        const bagsProducts = products.filter(product => product.category === 'bags');
+        setProducts(bagsProducts);
       } catch (error) {
         console.error('Erro ao carregar produtos:', error);
       } finally {
@@ -36,37 +37,19 @@ const BagsPage = () => {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-2xl font-semibold mb-6">Bolsas</h1>
       
-      {products.length === 0 ? (
+      {productsList.length === 0 ? (
         <div className="text-center py-8">
           <p className="text-gray-500">Nenhum produto encontrado nesta categoria.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {products.map((product) => (
-            <div key={product.id} className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="aspect-w-1 aspect-h-1">
-                <img
-                  src={product.imageUrl}
-                  alt={product.name}
-                  className="object-cover w-full h-full"
-                />
-              </div>
-              <div className="p-4">
-                <h3 className="text-lg font-medium text-gray-900">{product.name}</h3>
-                <p className="mt-1 text-gray-500">{product.description}</p>
-                <div className="mt-2 flex items-center justify-between">
-                  <span className="text-xl font-bold text-primary">
-                    {new Intl.NumberFormat('pt-BR', {
-                      style: 'currency',
-                      currency: 'BRL'
-                    }).format(product.price)}
-                  </span>
-                  <button className="bg-primary text-white px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">
-                    Comprar
-                  </button>
-                </div>
-              </div>
-            </div>
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-1">
+          {productsList.map((product) => (
+            <ProductCard
+              key={product.id}
+              image={product.imageUrl}
+              title={product.name}
+              price={product.price}
+            />
           ))}
         </div>
       )}

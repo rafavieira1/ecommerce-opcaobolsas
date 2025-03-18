@@ -161,11 +161,11 @@ const Index = () => {
               <ul className="space-y-2">
                 <li className="text-gray-600 text-sm flex items-center gap-2">
                   <Phone size={16} />
-                  (51) 99641-1191
+                  (19) 99999-9999
                 </li>
                 <li className="text-gray-600 text-sm flex items-center gap-2">
                   <Mail size={16} />
-                  hello@thunderpod.com.br
+                  sac@opcaobolsas.com
                 </li>
                 <li className="text-gray-600 text-sm">
                   Rua Silvio Bueno, 308<br />
