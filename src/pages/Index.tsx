@@ -168,9 +168,9 @@ const Index = () => {
                   hello@thunderpod.com.br
                 </li>
                 <li className="text-gray-600 text-sm">
-                  Av. General Flores da Cunha, 1891<br />
-                  Loja 407, Vila Cachoeirinha,<br />
-                  Cachoeirinha - RS, CEP 94.910-003
+                  Rua Silvio Bueno, 308<br />
+                  Centro - Jaguariúna - SP<br />
+                  CEP 13910-005
                 </li>
               </ul>
             </div>
@@ -213,9 +213,6 @@ const Index = () => {
                   <Facebook size={20} />
                 </a>
               </div>
-              <p className="text-xs text-gray-500">
-                © 2025 AZ Brands Comércio de Vestuário LTDA | CNPJ: 45.156.451/0001-50
-              </p>
             </div>
           </div>
         </div>
