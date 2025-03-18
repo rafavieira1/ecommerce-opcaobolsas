@@ -3,11 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
-import { auth, db } from '@/hooks/useFirebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
+import { login } from '@/lib/auth';
+import { useQueryClient } from '@tanstack/react-query';
 
 const Auth = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -21,6 +20,7 @@ const Auth = () => {
   });
   const { toast } = useToast();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData(prev => ({
@@ -35,12 +35,11 @@ const Auth = () => {
     
     try {
       if (isLogin) {
-        // Login com Firebase
-        await signInWithEmailAndPassword(
-          auth,
-          formData.email,
-          formData.password
-        );
+        // Login
+        const user = login(formData.email, formData.password);
+        
+        // Atualiza o cache do React Query
+        queryClient.setQueryData(['user'], user);
 
         toast({
           title: "Sucesso!",
@@ -56,7 +55,6 @@ const Auth = () => {
             title: "Erro",
             description: "As senhas não coincidem"
           });
-          setIsLoading(false);
           return;
         }
 
@@ -66,36 +64,17 @@ const Auth = () => {
             title: "Erro",
             description: "Por favor, preencha todos os campos"
           });
-          setIsLoading(false);
           return;
         }
 
-        console.log('Iniciando criação de usuário...');
-
-        // Criar usuário com Firebase
-        const userCredential = await createUserWithEmailAndPassword(
-          auth,
-          formData.email,
-          formData.password
-        );
-
-        console.log('Usuário criado com sucesso. UID:', userCredential.user.uid);
-
-        // Criar o documento do perfil no Firestore
-        const profileData = {
-          full_name: formData.fullName,
-          phone: formData.phone,
-          email: formData.email,
-          created_at: new Date().toISOString()
-        };
-
-        console.log('Criando perfil com dados:', profileData);
-
-        // Inserir informações adicionais do usuário no Firestore
-        const profileRef = doc(db, 'profiles', userCredential.user.uid);
-        await setDoc(profileRef, profileData);
-
-        console.log('Perfil criado com sucesso');
+        // Criar usuário
+        const user = login(formData.email, formData.password);
+        
+        // Atualiza o cache do React Query
+        queryClient.setQueryData(['user'], {
+          ...user,
+          name: formData.fullName,
+        });
 
         toast({
           title: "Sucesso!",
@@ -105,36 +84,10 @@ const Auth = () => {
         navigate('/');
       }
     } catch (error: any) {
-      console.error('Erro detalhado:', error);
-      
-      let errorMessage = "Ocorreu um erro. Por favor, tente novamente.";
-      
-      if (error.code === 'auth/network-request-failed') {
-        errorMessage = "Erro de conexão com o servidor. Verifique sua conexão com a internet.";
-      } else if (error.code === 'auth/email-already-in-use') {
-        errorMessage = "Este e-mail já está cadastrado.";
-      } else if (error.code === 'auth/invalid-credential') {
-        errorMessage = "E-mail ou senha inválidos.";
-      } else if (error.code === 'auth/too-many-requests') {
-        errorMessage = "Muitas tentativas de login. Tente novamente mais tarde.";
-      } else if (error.code === 'auth/weak-password') {
-        errorMessage = "A senha é muito fraca. Use pelo menos 6 caracteres.";
-      } else if (error.code === 'auth/invalid-email') {
-        errorMessage = "O formato do e-mail é inválido.";
-      } else if (error.code === 'auth/operation-not-allowed') {
-        errorMessage = "Operação não permitida. Entre em contato com o suporte.";
-      } else if (error.code === 'auth/user-disabled') {
-        errorMessage = "Esta conta foi desativada. Entre em contato com o suporte.";
-      } else if (error.code === 'auth/missing-password') {
-        errorMessage = "Por favor, informe uma senha.";
-      } else if (error.code === 'auth/internal-error') {
-        errorMessage = "Erro interno do servidor. Tente novamente mais tarde.";
-      }
-      
       toast({
         variant: "destructive",
         title: "Erro",
-        description: errorMessage,
+        description: "Ocorreu um erro. Por favor, tente novamente.",
       });
     } finally {
       setIsLoading(false);

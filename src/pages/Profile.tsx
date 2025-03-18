@@ -1,20 +1,86 @@
 import { useNavigate } from 'react-router-dom';
 import { Heart, ShoppingBag, CreditCard, MessageSquare, ThumbsUp, User2 } from 'lucide-react';
+import { useUser } from '@/hooks/useUser';
 
 const Profile = () => {
   const navigate = useNavigate();
+  const { data: user, isLoading, error } = useUser();
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
+
+  if (error || !user) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="text-center">
+          <p className="text-gray-500">Erro ao carregar dados do usuário. Por favor, tente novamente.</p>
+          <button
+            onClick={() => navigate('/auth')}
+            className="mt-4 px-4 py-2 bg-primary text-white rounded hover:bg-primary/90"
+          >
+            Fazer Login
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  const shortcuts = [
+    {
+      icon: <ShoppingBag className="w-6 h-6 text-[#FF4D0D]" />,
+      title: "MEUS PEDIDOS",
+      description: "Veja histórico e acompanhe suas compras."
+    },
+    {
+      icon: <User2 className="w-6 h-6 text-[#FF4D0D]" />,
+      title: "MEUS DADOS",
+      description: "Altere seus dados cadastrados, endereços ou cadastre um novo endereço."
+    },
+    {
+      icon: <CreditCard className="w-6 h-6 text-[#FF4D0D]" />,
+      title: "CARTEIRA",
+      description: "Gerencie seus cartões, créditos e resgate gift card."
+    },
+    {
+      icon: <MessageSquare className="w-6 h-6 text-[#FF4D0D]" />,
+      title: "PROTOCOLOS",
+      description: "Aqui você encontra seus protocolos de atendimento."
+    },
+    {
+      icon: <ThumbsUp className="w-6 h-6 text-[#FF4D0D]" />,
+      title: "AVALIAÇÕES",
+      description: "Avalie suas compras e visualize suas avaliações e comentários."
+    },
+    {
+      icon: <Heart className="w-6 h-6 text-[#FF4D0D]" />,
+      title: "FAVORITOS",
+      description: "Consulte sua lista de produtos favoritados."
+    }
+  ];
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
-        {/* Cabeçalho do Perfil */}
         <div className="flex items-center gap-4 mb-8">
           <div className="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center">
-            <User2 className="w-12 h-12 text-gray-500" />
+            {user.avatar ? (
+              <img
+                src={user.avatar}
+                alt={user.name}
+                className="w-full h-full rounded-full object-cover"
+              />
+            ) : (
+              <User2 className="w-12 h-12 text-gray-500" />
+            )}
           </div>
           <div>
-            <h1 className="text-2xl font-bold">Bem-vindo, Rafael Silva Vieira</h1>
-            <p className="text-gray-600">rafavieira372@gmail.com</p>
+            <h1 className="text-2xl font-bold">Bem-vindo, {user.name}</h1>
+            <p className="text-gray-600">{user.email}</p>
           </div>
           <button
             onClick={() => navigate('/auth')}
@@ -26,85 +92,20 @@ const Profile = () => {
 
         <h2 className="text-xl font-semibold mb-6 text-[#FF4D0D]">ATALHOS</h2>
 
-        {/* Grid de Atalhos */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {/* Meus Pedidos */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-            <div className="flex items-start gap-4">
-              <div className="p-2 bg-[#FF4D0D]/10 rounded">
-                <ShoppingBag className="w-6 h-6 text-[#FF4D0D]" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">MEUS PEDIDOS</h3>
-                <p className="text-sm text-gray-600">Veja histórico e acompanhe suas compras.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Meus Dados */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-            <div className="flex items-start gap-4">
-              <div className="p-2 bg-[#FF4D0D]/10 rounded">
-                <User2 className="w-6 h-6 text-[#FF4D0D]" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">MEUS DADOS</h3>
-                <p className="text-sm text-gray-600">Altere seus dados cadastrados, endereços ou cadastre um novo endereço.</p>
+          {shortcuts.map((shortcut, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
+              <div className="flex items-start gap-4">
+                <div className="p-2 bg-[#FF4D0D]/10 rounded">
+                  {shortcut.icon}
+                </div>
+                <div>
+                  <h3 className="font-semibold mb-2">{shortcut.title}</h3>
+                  <p className="text-sm text-gray-600">{shortcut.description}</p>
+                </div>
               </div>
             </div>
-          </div>
-
-          {/* Carteira */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-            <div className="flex items-start gap-4">
-              <div className="p-2 bg-[#FF4D0D]/10 rounded">
-                <CreditCard className="w-6 h-6 text-[#FF4D0D]" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">CARTEIRA</h3>
-                <p className="text-sm text-gray-600">Gerencie seus cartões, créditos e resgate gift card.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Protocolos */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-            <div className="flex items-start gap-4">
-              <div className="p-2 bg-[#FF4D0D]/10 rounded">
-                <MessageSquare className="w-6 h-6 text-[#FF4D0D]" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">PROTOCOLOS</h3>
-                <p className="text-sm text-gray-600">Aqui você encontra seus protocolos de atendimento.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Avaliações */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-            <div className="flex items-start gap-4">
-              <div className="p-2 bg-[#FF4D0D]/10 rounded">
-                <ThumbsUp className="w-6 h-6 text-[#FF4D0D]" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">AVALIAÇÕES</h3>
-                <p className="text-sm text-gray-600">Avalie suas compras e visualize suas avaliações e comentários.</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Favoritos */}
-          <div className="bg-white p-6 rounded-lg shadow-sm border hover:shadow-md transition-shadow">
-            <div className="flex items-start gap-4">
-              <div className="p-2 bg-[#FF4D0D]/10 rounded">
-                <Heart className="w-6 h-6 text-[#FF4D0D]" />
-              </div>
-              <div>
-                <h3 className="font-semibold mb-2">FAVORITOS</h3>
-                <p className="text-sm text-gray-600">Consulte sua lista de produtos favoritados.</p>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
