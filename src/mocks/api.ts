@@ -6,16 +6,20 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
 export const api = {
   async getProduct(id: string): Promise<Product> {
-    await delay(1000); // Simula latência de rede
+    if (!id) throw new Error('ID é obrigatório');
+    
+    await delay(1000);
     const product = productsData.find(p => p.id === id);
+    
     if (!product) {
-      throw new Error('Product not found');
+      throw new Error(`Produto não encontrado: ${id}`);
     }
+    
     return product;
   },
 
-  async getProducts(): Promise<Product[]> {
+  async getProducts(limit?: number): Promise<Product[]> {
     await delay(1000);
-    return productsData;
+    return limit ? productsData.slice(0, limit) : productsData;
   }
 }; 

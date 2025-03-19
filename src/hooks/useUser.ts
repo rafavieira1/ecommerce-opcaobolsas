@@ -5,16 +5,16 @@ export const useUser = () => {
   return useQuery<User>({
     queryKey: ['user'],
     queryFn: async () => {
-      // Recupera os dados do usuário do localStorage
-      const userData = localStorage.getItem('user');
-      
-      if (!userData) {
-        throw new Error('User not found');
+      try {
+        const userData = localStorage.getItem('user');
+        if (!userData) throw new Error('User not found');
+        return JSON.parse(userData);
+      } catch (error) {
+        throw new Error('Erro ao recuperar dados do usuário');
       }
-
-      return JSON.parse(userData);
     },
-    retry: false, // Não tenta novamente se falhar
-    staleTime: Infinity, // Mantém os dados em cache indefinidamente
+    retry: false,
+    staleTime: Infinity,
+    gcTime: 1000 * 60 * 60 * 24, // 24 horas - tempo até que os dados inativos sejam removidos do cache
   });
 }; 

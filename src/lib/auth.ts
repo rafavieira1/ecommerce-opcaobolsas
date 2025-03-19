@@ -1,18 +1,24 @@
 import { User } from '@/types/user';
 
 export const login = (email: string, password: string) => {
-  // Simula um login - em produção isso seria uma chamada à API
+  // Adicionar validações básicas
+  if (!email || !password) {
+    throw new Error('Email e senha são obrigatórios');
+  }
+
+  if (!email.includes('@')) {
+    throw new Error('Email inválido');
+  }
+
   const user: User = {
-    id: '1',
-    name: email.split('@')[0], // Usa a parte antes do @ como nome
+    id: crypto.randomUUID(), // Gerar ID único
+    name: email.split('@')[0],
     email,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
 
-  // Salva os dados do usuário no localStorage
   localStorage.setItem('user', JSON.stringify(user));
-  
   return user;
 };
 

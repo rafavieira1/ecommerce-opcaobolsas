@@ -22,29 +22,29 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.setItem('cart', JSON.stringify(items));
   }, [items]);
 
-  const addItem = (product: Product) => {
+  const addItem = (product: Product, quantity = 1) => {
     setItems(currentItems => {
       const existingItem = currentItems.find(item => item.product.id === product.id);
       
       if (existingItem) {
         toast({
           title: "Produto atualizado",
-          description: "Quantidade atualizada no carrinho",
+          description: `Quantidade atualizada para ${existingItem.quantity + quantity}`,
         });
         
         return currentItems.map(item =>
           item.product.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + quantity }
             : item
         );
       }
 
       toast({
         title: "Produto adicionado",
-        description: "Item adicionado ao carrinho",
+        description: `${product.name} adicionado ao carrinho`,
       });
 
-      return [...currentItems, { product, quantity: 1 }];
+      return [...currentItems, { product, quantity }];
     });
   };
 

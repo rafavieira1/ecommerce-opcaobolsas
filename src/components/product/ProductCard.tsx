@@ -2,6 +2,7 @@ import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { formatPrice } from '@/lib/utils';
 
 interface ProductCardProps {
   image: string;
@@ -11,14 +12,6 @@ interface ProductCardProps {
   onClick?: () => void;
   className?: string;
 }
-
-// Criar função utilitária para formatação de preço
-const formatPrice = (price: number) => {
-  return new Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL'
-  }).format(price);
-};
 
 const ProductCard = ({
   image,
