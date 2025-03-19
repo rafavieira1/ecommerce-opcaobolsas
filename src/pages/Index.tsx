@@ -1,222 +1,253 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProductCard from '@/components/product/ProductCard';
 import { Button } from "@/components/ui/button";
-import { Facebook, Instagram, Mail, Phone, Heart } from 'lucide-react';
-
-// Temporary mock data
-const featuredProducts = [
-  {
-    id: 1,
-    title: "Bolsa Elegante Couro Genuíno Preta",
-    price: 299.99,
-    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=1000",
-  },
-  {
-    id: 2,
-    title: "Bolsa Casual Moderna Off-White",
-    price: 199.99,
-    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=1000",
-  },
-  {
-    id: 3,
-    title: "Bolsa Executiva Estruturada Marrom",
-    price: 399.99,
-    image: "https://images.unsplash.com/photo-1573346544005-4e314e2e3159?auto=format&fit=crop&q=80&w=1000",
-  },
-  {
-    id: 4,
-    title: "Bolsa Transversal Casual Bege",
-    price: 159.99,
-    image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=1000",
-  },
-  // Adicionar mais produtos para melhor visualização do grid
-  {
-    id: 5,
-    title: "Bolsa Shopper Grande Nude",
-    price: 259.99,
-    image: "https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=1000",
-  },
-  {
-    id: 6,
-    title: "Bolsa Bucket Texturizada Verde",
-    price: 179.99,
-    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=1000",
-  },
-  {
-    id: 7,
-    title: "Bolsa Clutch Festa Dourada",
-    price: 149.99,
-    image: "https://images.unsplash.com/photo-1573346544005-4e314e2e3159?auto=format&fit=crop&q=80&w=1000",
-  },
-  {
-    id: 8,
-    title: "Bolsa Tote Clássica Vermelha",
-    price: 289.99,
-    image: "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=1000",
-  },
-];
+import { Facebook, Instagram, Mail, Phone, Heart, ArrowDown } from 'lucide-react';
+import { products } from '@/data/products';
+import { Product } from '@/types/product';
+import { motion } from 'framer-motion';
 
 const Index = () => {
+  const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    // Pegando os primeiros 8 produtos para exibir como destaque
+    // Você pode modificar essa lógica para mostrar produtos específicos
+    const featured = products.slice(0, 8);
+    setFeaturedProducts(featured);
+  }, []);
+
+  const scrollToProducts = () => {
+    const productsSection = document.getElementById('featured-products');
+    if (productsSection) {
+      productsSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0
+    }
+  };
+
   return (
-    <div>
+    <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative h-[80vh] bg-[#E8F5E9] overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full flex items-center">
-          <div className="max-w-lg">
-            <h1 className="text-5xl font-bold text-gray-900 mb-6">
-              Leve 3, Pague 2
-            </h1>
-            <p className="text-lg text-gray-600 mb-8">
-              Desconto sobre o valor do produto de menor preço, aplicado automaticamente no carrinho.
-            </p>
-            <Button
-              className="bg-primary hover:bg-primary-hover text-white text-lg px-8 py-6 h-auto"
-              size="lg"
-            >
-              MONTE AGORA SEU KIT
-            </Button>
-          </div>
+      <motion.section 
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+        className="relative h-[80vh] flex items-center"
+      >
+        <div className="absolute inset-0 overflow-hidden">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            className="absolute inset-0 bg-black/20 backdrop-blur-[4px]"
+          />
+          <motion.img
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            src="https://scontent.fcac3-1.fna.fbcdn.net/v/t1.6435-9/91909807_2852718344809422_5658568753340743680_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=UqEESEAHNuUQ7kNvgFSiPXG&_nc_oc=AdlNIi2h7_aHQQEBoyZdWOBwwVD8FPEDRZe91cT3x6ug45LXe9EIFW2llRnDdNzjPQc&_nc_zt=23&_nc_ht=scontent.fcac3-1.fna&_nc_gid=2hkWHu677A7hVVNQBZUgcw&oh=00_AYGQAzvuRQ8wiSLrgKXgyrjk7tZmuCK6KgieaHdGN6cvmQ&oe=68016E26"
+            alt="Hero Background"
+            className="w-full h-full object-cover object-center"
+          />
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.5 }}
+            className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/30"
+          />
         </div>
-      </section>
+        
+        <div className="container mx-auto px-4 relative z-20">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="max-w-2xl"
+          >
+            <h1 className="text-5xl md:text-6xl font-ponomar font-bold text-white mb-6 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+              Elegância em cada detalhe
+            </h1>
+            <p className="text-xl text-white mb-8 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">
+              Descubra nossa coleção exclusiva de bolsas e acessórios que combinam estilo e qualidade.
+            </p>
+            <motion.div
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Button
+                onClick={scrollToProducts}
+                className="bg-green-700 hover:bg-gray-800 text-white px-8 py-6 text-lg font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300"
+              >
+                Explorar Coleção
+              </Button>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <motion.button
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.5 }}
+          whileHover={{ y: 5 }}
+          onClick={scrollToProducts}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-gray-600 hover:text-primary transition-colors"
+        >
+          <ArrowDown className="w-8 h-8 animate-bounce" />
+        </motion.button>
+      </motion.section>
 
       {/* Featured Products Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-[2000px] mx-auto">
-          <div className="flex items-center justify-between mb-8 px-4">
-            <h2 className="text-xl font-bold text-gray-900">
-              PRODUTOS EM DESTAQUE
+      <motion.section
+        id="featured-products"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={containerVariants}
+        className="py-20 bg-white"
+      >
+        <div className="w-full max-w-[2000px] mx-auto px-4">
+          <motion.div 
+            variants={itemVariants}
+            className="flex items-center justify-between mb-12"
+          >
+            <h2 className="text-3xl font-ponomar font-bold text-gray-900">
+              Produtos em Destaque
             </h2>
-            <a href="/produtos" className="text-primary text-sm hover:underline">
-              Veja mais produtos →
-            </a>
-          </div>
+          </motion.div>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-1">
-            {featuredProducts.map((product) => (
-              <div key={product.id} className="relative group">
-                <div className="absolute top-2 left-2 z-10">
-                  <span className="bg-red-500 text-white text-xs px-2 py-1 rounded">SALE</span>
-                </div>
-                <div className="absolute top-2 right-2 z-10">
-                  <button className="text-gray-600 hover:text-red-500 transition-colors">
-                    <Heart className="w-6 h-6" />
-                  </button>
-                </div>
-                <div className="aspect-[5/5] overflow-hidden bg-gray-100">
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  />
-                </div>
-                <div className="p-4">
-                  <h3 className="text-sm font-medium text-gray-900 mb-2">
-                    {product.title}
-                  </h3>
-                  <div className="flex flex-col">
-                    <span className="text-lg font-bold text-gray-900">
-                      R${product.price.toFixed(2)}
-                    </span>
-                    <span className="text-sm text-gray-600">
-                      6x de R${(product.price / 6).toFixed(2)} sem juros
-                    </span>
-                  </div>
-                </div>
-              </div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {featuredProducts.map((product, index) => (
+              <motion.div
+                key={product.id}
+                variants={itemVariants}
+                custom={index}
+              >
+                <ProductCard
+                  productId={product.id}
+                  image={product.imageUrl}
+                  title={product.name}
+                  price={product.price}
+                />
+              </motion.div>
             ))}
           </div>
         </div>
-      </section>
+      </motion.section>
 
       {/* Footer Section */}
-      <footer className="bg-gray-100 py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            {/* Institutional */}
-            <div>
-              <h3 className="font-bold text-gray-900 mb-4">INSTITUCIONAL</h3>
-              <ul className="space-y-2">
-                <li><a href="/quem-somos" className="text-gray-600 hover:text-primary text-sm">Quem Somos</a></li>
-                <li><a href="/contato" className="text-gray-600 hover:text-primary text-sm">Contato</a></li>
-                <li><a href="https://wa.me/5551996411191" className="text-gray-600 hover:text-primary text-sm">WhatsApp</a></li>
-              </ul>
-            </div>
+      <motion.footer
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        className="bg-gray-100 py-16"
+      >
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <motion.div
+              variants={itemVariants}
+              className="space-y-4"
+            >
+              <h3 className="text-xl font-ponomar font-semibold text-gray-900">Sobre Nós</h3>
+              <p className="text-gray-600">
+                Somos apaixonados por oferecer produtos de qualidade que combinam estilo e funcionalidade.
+              </p>
+            </motion.div>
 
-            {/* Need Help */}
-            <div>
-              <h3 className="font-bold text-gray-900 mb-4">PRECISA DE AJUDA?</h3>
-              <ul className="space-y-2">
-                <li><a href="/politica-trocas" className="text-gray-600 hover:text-primary text-sm">Política de Trocas e Devoluções</a></li>
-                <li><a href="/privacidade" className="text-gray-600 hover:text-primary text-sm">Política de Privacidade</a></li>
-                <li><a href="/envio" className="text-gray-600 hover:text-primary text-sm">Informações de envio</a></li>
-                <li><a href="/frete" className="text-gray-600 hover:text-primary text-sm">Frete Grátis</a></li>
-                <li><a href="/pagamentos" className="text-gray-600 hover:text-primary text-sm">Pagamentos</a></li>
-              </ul>
-            </div>
-
-            {/* Contact */}
-            <div>
-              <h3 className="font-bold text-gray-900 mb-4">ENTRE EM CONTATO</h3>
-              <ul className="space-y-2">
-                <li className="text-gray-600 text-sm flex items-center gap-2">
-                  <Phone size={16} />
-                  (19) 99999-9999
-                </li>
-                <li className="text-gray-600 text-sm flex items-center gap-2">
-                  <Mail size={16} />
-                  sac@opcaobolsas.com
-                </li>
-                <li className="text-gray-600 text-sm">
-                  Rua Silvio Bueno, 308<br />
-                  Centro - Jaguariúna - SP<br />
-                  CEP 13910-005
-                </li>
-              </ul>
-            </div>
-
-            {/* Newsletter */}
-            <div>
-              <h3 className="font-bold text-gray-900 mb-4">NEWSLETTER</h3>
-              <p className="text-gray-600 text-sm mb-4">INSCREVA-SE E RECEBA NOVIDADES</p>
-              <form className="space-y-3">
-                <input
-                  type="text"
-                  placeholder="Nome"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-                />
-                <input
-                  type="email"
-                  placeholder="E-mail"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-                />
-                <input
-                  type="tel"
-                  placeholder="Telefone com DDD"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-                />
-                <button className="w-full bg-black text-white py-2 rounded-md text-sm hover:bg-gray-800 transition-colors">
-                  INSCREVER-SE
-                </button>
-              </form>
-            </div>
-          </div>
-
-          {/* Social Media & Copyright */}
-          <div className="mt-16 pt-8 border-t border-gray-200">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-4">
-                <a href="https://instagram.com" className="text-gray-600 hover:text-primary">
-                  <Instagram size={20} />
+            <motion.div
+              variants={itemVariants}
+              className="space-y-4"
+            >
+              <h3 className="text-xl font-ponomar font-semibold text-gray-900">Contato</h3>
+              <div className="space-y-2">
+                <a href="tel:+551199999999" className="flex items-center text-gray-600 hover:text-primary transition-colors">
+                  <Phone className="h-5 w-5 mr-2" />
+                  (11) 9999-9999
                 </a>
-                <a href="https://facebook.com" className="text-gray-600 hover:text-primary">
-                  <Facebook size={20} />
+                <a href="mailto:contato@opcaobolsas.com" className="flex items-center text-gray-600 hover:text-primary transition-colors">
+                  <Mail className="h-5 w-5 mr-2" />
+                  contato@opcaobolsas.com
                 </a>
               </div>
-            </div>
+            </motion.div>
+
+            <motion.div
+              variants={itemVariants}
+              className="space-y-4"
+            >
+              <h3 className="text-xl font-ponomar font-semibold text-gray-900">Redes Sociais</h3>
+              <div className="flex space-x-4">
+                <motion.a
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-primary transition-colors"
+                >
+                  <Facebook className="h-6 w-6" />
+                </motion.a>
+                <motion.a
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-primary transition-colors"
+                >
+                  <Instagram className="h-6 w-6" />
+                </motion.a>
+              </div>
+            </motion.div>
+
+            <motion.div
+              variants={itemVariants}
+              className="space-y-4"
+            >
+              <h3 className="text-xl font-ponomar font-semibold text-gray-900">Newsletter</h3>
+              <p className="text-gray-600">
+                Receba nossas novidades e promoções exclusivas.
+              </p>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  placeholder="Seu e-mail"
+                  className="flex-1 px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary"
+                />
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
+                >
+                  Assinar
+                </motion.button>
+              </div>
+            </motion.div>
           </div>
+
+          <motion.div
+            variants={itemVariants}
+            className="mt-12 pt-8 border-t border-gray-200 text-center text-gray-600"
+          >
+            <p>&copy; 2024 Opção Bolsas. Todos os direitos reservados.</p>
+          </motion.div>
         </div>
-      </footer>
+      </motion.footer>
     </div>
   );
 };

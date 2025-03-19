@@ -1,11 +1,13 @@
 import { Heart } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface ProductCardProps {
   image: string;
   title: string;
   price: number;
+  productId: string;
   onClick?: () => void;
   className?: string;
 }
@@ -22,57 +24,87 @@ const ProductCard = ({
   image,
   title,
   price,
+  productId,
   onClick,
   className,
 }: ProductCardProps) => {
-  // Calcular o preço parcelado (6x sem juros)
+  const navigate = useNavigate();
   const installmentPrice = price / 6;
 
+  const handleProductClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    navigate(`/product/${productId}`);
+  };
+
   return (
-    <div 
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3 }}
+      whileHover={{ y: -5 }}
       className={cn(
-        "group relative bg-white rounded-none overflow-hidden",
+        "group relative bg-white border-[0.5px] border-gray-200 cursor-pointer rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all duration-300",
         className
       )}
-      onClick={onClick}
+      onClick={handleProductClick}
     >
       {/* Favorite button */}
-      <button className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/80 hover:bg-white transition-colors">
-        <Heart className="h-5 w-5 text-gray-600 hover:text-primary" />
-      </button>
-
-      {/* Sale Badge */}
-      <Badge className="absolute top-4 left-4 z-10 bg-rose-500 hover:bg-rose-600">
-        Leve 3 Pague 2
-      </Badge>
+      <motion.button 
+        className="absolute top-4 right-4 z-10 text-gray-600 hover:text-primary transition-colors bg-white/80 backdrop-blur-sm p-2 rounded-full"
+        onClick={(e) => {
+          e.stopPropagation();
+          // TODO: Implementar lógica de favoritos
+        }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+      >
+        <Heart className="h-5 w-5" />
+      </motion.button>
 
       {/* Image Container */}
-      <div className="aspect-square overflow-hidden bg-gray-100 cursor-pointer">
-        <img
+      <div className="aspect-[4/5] overflow-hidden bg-gray-50">
+        <motion.img
           src={image}
           alt={title}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-full object-cover"
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.4 }}
         />
       </div>
 
       {/* Product Info */}
-      <div className="p-4 text-center">
-        <h3 className="text-gray-800 text-sm mb-2 group-hover:text-primary transition-colors line-clamp-2 min-h-[40px]">
+      <div className="p-6 text-center bg-white">
+        <h3 className="text-gray-800 font-ponomar text-lg mb-3 group-hover:text-primary transition-colors line-clamp-2 min-h-[20px]">
           {title}
         </h3>
         <div className="space-y-1">
-          <p className="text-gray-500 text-sm line-through">
+          <motion.p 
+            className="text-gray-500 font-ponomar text-sm line-through"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
             {formatPrice(price * 1.1)}
-          </p>
-          <p className="text-primary font-semibold">
+          </motion.p>
+          <motion.p 
+            className="text-primary font-ponomar text-2xl font-extrabold tracking-wider leading-relaxed"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+          >
             {formatPrice(price)}
-          </p>
-          <p className="text-gray-500 text-sm">
+          </motion.p>
+          <motion.p 
+            className="text-gray-500 font-ponomar text-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+          >
             6x de {formatPrice(installmentPrice)} sem juros
-          </p>
+          </motion.p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

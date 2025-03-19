@@ -1,8 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
-import { User2, Heart, ShoppingBag } from "lucide-react";
+import { User2, Heart } from "lucide-react";
 import { useUser } from "@/hooks/useUser";
 import { logout } from "@/lib/auth";
 import { useQueryClient } from "@tanstack/react-query";
+import { CartDropdown } from "../cart/CartDropdown";
 
 const UserNav = () => {
   const { data: user } = useUser();
@@ -21,9 +22,7 @@ const UserNav = () => {
       <button className="hover:text-primary transition-colors">
         <Heart className="w-6 h-6" />
       </button>
-      <button className="hover:text-primary transition-colors">
-        <ShoppingBag className="w-6 h-6" />
-      </button>
+      <CartDropdown />
       {!user ? (
         <Link
           to="/auth"

@@ -34,18 +34,21 @@ const SuitcasesPage = () => {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-semibold mb-6">Malas</h1>
+    <div className="w-full max-w-[2000px] mx-auto py-8 px-4">
+      <div>
+        <h1 className="text-2xl font-semibold mb-6">Malas</h1>
+      </div>
       
       {productsList.length === 0 ? (
         <div className="text-center py-8">
           <p className="text-gray-500">Nenhum produto encontrado nesta categoria.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-1">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-0">
           {productsList.map((product) => (
             <ProductCard
               key={product.id}
+              productId={product.id}
               image={product.imageUrl}
               title={product.name}
               price={product.price}

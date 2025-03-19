@@ -1,5 +1,5 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Ponomar&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -13,7 +13,7 @@
     --card-foreground: 240 10% 3.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-    --primary: 142 72% 29%;
+    --primary: 144 17% 67%;
     --primary-foreground: 355.7 100% 97.3%;
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
@@ -25,7 +25,7 @@
     --destructive-foreground: 0 0% 98%;
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-    --ring: 142 72% 29%;
+    --ring: 144 17% 67%;
     --radius: 0.75rem;
   }
 
@@ -35,6 +35,10 @@
 
   body {
     @apply bg-background text-foreground antialiased font-inter;
+  }
+
+  html {
+    font-family: 'Ponomar', serif;
   }
 }
 
