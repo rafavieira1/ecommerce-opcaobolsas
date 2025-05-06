@@ -61,7 +61,7 @@ const Index = () => {
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
-            src="https://scontent.fcac3-1.fna.fbcdn.net/v/t1.6435-9/91909807_2852718344809422_5658568753340743680_n.jpg?_nc_cat=108&ccb=1-7&_nc_sid=cc71e4&_nc_ohc=UqEESEAHNuUQ7kNvgFSiPXG&_nc_oc=AdlNIi2h7_aHQQEBoyZdWOBwwVD8FPEDRZe91cT3x6ug45LXe9EIFW2llRnDdNzjPQc&_nc_zt=23&_nc_ht=scontent.fcac3-1.fna&_nc_gid=2hkWHu677A7hVVNQBZUgcw&oh=00_AYGQAzvuRQ8wiSLrgKXgyrjk7tZmuCK6KgieaHdGN6cvmQ&oe=68016E26"
+            src="/images/hero.jpg"
             alt="Hero Background"
             className="w-full h-full object-cover object-center"
           />
