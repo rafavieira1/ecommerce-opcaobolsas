@@ -36,12 +36,12 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
           {/* Logo */}
-          <div className="flex-shrink-0 w-[180px] flex items-center">
-            <Link to="/" className="flex items-center">
+          <div className="flex-shrink-0 w-[220px] flex items-center justify-center">
+            <Link to="/" className="flex items-center justify-center w-full">
               <img 
                 src="/images/logo.png"
                 alt="Opção Bolsas"
-                className="h-10 w-auto object-contain"
+                className="h-16 w-auto object-contain"
               />
             </Link>
           </div>

@@ -3,7 +3,6 @@ import { User2, Heart } from "lucide-react";
 import { useUser } from "@/hooks/useUser";
 import { logout } from "@/lib/auth";
 import { useQueryClient } from "@tanstack/react-query";
-import { CartDropdown } from "../cart/CartDropdown";
 import { useState } from "react";
 
 const UserNav = () => {
@@ -29,7 +28,6 @@ const UserNav = () => {
       <button className="hover:text-primary transition-colors">
         <Heart className="w-6 h-6" />
       </button>
-      <CartDropdown />
       {!user ? (
         <Link
           to="/auth"
